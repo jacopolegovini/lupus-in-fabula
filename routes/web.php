@@ -19,6 +19,12 @@ Route::post('/create-room', function () {
 use App\Models\Player;
 use Illuminate\Http\Request;
 
+// Mostra il form
+Route::get('/join', function () {
+    return view('join');
+});
+
+
 Route::post('/join', function (Request $request) {
     $room = Room::where('code', $request->code)->first();
 
