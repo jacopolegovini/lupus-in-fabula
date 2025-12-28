@@ -8,14 +8,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/create-room', function () {
-    $room = Room::create([
-        'code' => strtoupper(Str::random(6))
-    ]);
-
-    return "Stanza creata! Codice: " . $room->code;
-});
-
 use App\Models\Player;
 use Illuminate\Http\Request;
 
@@ -24,7 +16,7 @@ Route::get('/join', function () {
     return view('join');
 });
 
-
+// Mostra la pagina di join
 Route::post('/join', function (Request $request) {
     $room = Room::where('code', $request->code)->first();
 
@@ -86,4 +78,22 @@ Route::get('/room/{code}/players', function ($code) {
 
     $players = \App\Models\Player::where('room_id', $room->id)->get();
     return response()->json($players);
+});
+
+
+// Creazione stanza
+Route::get('/create-room', function () {
+    return view('create-room');
+});
+
+Route::post('/create-room', function (Illuminate\Http\Request $request) {
+    $room = \App\Models\Room::create([
+        'code' => strtoupper(Str::random(6)),
+        'max_players' => $request->max_players,
+        'max_lupi' => $request->max_lupi,
+        'max_veggenti' => $request->max_veggenti,
+        'max_contadini' => $request->max_contadini,
+    ]);
+
+    return $room->code;
 });
