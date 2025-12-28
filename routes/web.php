@@ -76,11 +76,14 @@ Route::get('/room/{code}', function ($code) {
     if (!$room) {
         return "Stanza non trovata!";
     }
+    return view('room', ['room' => $room]);
+});
 
-    $players = Player::where('room_id', $room->id)->get();
+// Questa deve restituire il JSON per Axios
+Route::get('/room/{code}/players', function ($code) {
+    $room = \App\Models\Room::where('code', $code)->first();
+    if (!$room) return response()->json([], 404);
 
-    return view('room', [
-        'room' => $room,
-        'players' => $players
-    ]);
+    $players = \App\Models\Player::where('room_id', $room->id)->get();
+    return response()->json($players);
 });

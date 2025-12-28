@@ -1,8 +1,13 @@
-<h1>Stanza: {{ $room->code }}</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stanza {{ $room->code }}</title>
+    @vite('resources/js/app.js')
+</head>
+<body>
+    <div id="app">
+        <room-component room-code="{{ $room->code }}"></room-component>
+    </div>
+</body>
+</html>
 
-<h2>Giocatori nella stanza:</h2>
-<ul>
-    @foreach($players as $player)
-        <li>{{ $player->name }} - {{ $player->role }}</li>
-    @endforeach
-</ul>
