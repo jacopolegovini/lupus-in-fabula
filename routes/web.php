@@ -68,3 +68,19 @@ Route::post('/join', function (Request $request) {
 
     return "Benvenuto {$player->name}! Il tuo ruolo è: {$player->role}";
 });
+
+// Mostra la pagina del narratore
+Route::get('/room/{code}', function ($code) {
+    $room = Room::where('code', $code)->first();
+
+    if (!$room) {
+        return "Stanza non trovata!";
+    }
+
+    $players = Player::where('room_id', $room->id)->get();
+
+    return view('room', [
+        'room' => $room,
+        'players' => $players
+    ]);
+});
