@@ -36,7 +36,7 @@ Route::post('/join', function (Request $request) {
     $existingPlayers = Player::where('room_id', $room->id)->get();
 
     // Definiamo i ruoli massimi disponibili
-    $maxRoles = ['Lupo' => 1, 'Veggente' => 1, 'Contadino' => 10];
+    $maxRoles = ['Lupo' => 2, 'Veggente' => 1, 'Contadino' => 5];
 
     // Conta quanti giocatori hanno già ogni ruolo
     $roleCounts = [];
