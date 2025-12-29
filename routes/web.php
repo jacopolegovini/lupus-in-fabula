@@ -24,11 +24,27 @@ Route::post('/join', function (Request $request) {
         return "Stanza non trovata!";
     }
 
+        $playerCount = Player::where('room_id', $room->id)->count();
+    if ($playerCount >= $room->max_players) {
+        return "La stanza è piena!";
+    }
+
     // Controlla quanti giocatori ci sono già
     $existingPlayers = Player::where('room_id', $room->id)->get();
 
+    // Controllo numero massimo di giocatori
+if ($existingPlayers->count() >= $room->max_players) {
+    return "La stanza è piena!";
+}
+
+
     // Definiamo i ruoli massimi disponibili
-    $maxRoles = ['Lupo' => 2, 'Veggente' => 1, 'Contadino' => 5];
+    $maxRoles = [
+    'Lupo' => $room->max_lupi,
+    'Veggente' => $room->max_veggenti,
+    'Contadino' => $room->max_contadini,
+];
+
 
     // Conta quanti giocatori hanno già ogni ruolo
     $roleCounts = [];
@@ -57,7 +73,6 @@ Route::post('/join', function (Request $request) {
         'name' => $request->name,
         'role' => $role
     ]);
-
     return "Benvenuto {$player->name}! Il tuo ruolo è: {$player->role}";
 });
 
@@ -94,6 +109,13 @@ Route::post('/create-room', function (Illuminate\Http\Request $request) {
         'max_veggenti' => $request->max_veggenti,
         'max_contadini' => $request->max_contadini,
     ]);
+
+    $totalRoles = $request->max_lupi + $request->max_veggenti + $request->max_contadini;
+
+if ($totalRoles > $request->max_players) {
+    return response("Errore: i ruoli superano il numero massimo di giocatori", 400);
+}
+
 
     return $room->code;
 });
