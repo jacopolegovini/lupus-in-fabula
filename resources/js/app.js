@@ -1,6 +1,7 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import router from './router';
+import '../css/app.css';
 
 import RoomComponent from './components/RoomComponent.vue';
 import CreateRoom from './components/CreateRoom.vue';

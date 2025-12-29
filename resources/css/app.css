@@ -9,3 +9,60 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* ========== VARIABILI ========= */
+:root {
+    --bg: #FFAC1C;
+    --main-button: #1c6fff;
+    --secondary-button: #ff1c6f;
+}
+
+/* ========== BASE ========= */
+body {
+    background: var(--bg);
+    color: white;
+    font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+}
+
+#app {
+    min-height: 100vh;
+}
+
+.main-button {
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0.75rem 1.5rem;
+    background: var(--main-button);
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+
+}
+
+.secondary-button {
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0.75rem 1.5rem;
+    background: var(--secondary-button);
+    color: white;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+/* ========== LAYOUT ========= */
+.home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home .main-button {
+    margin: 1rem;
+    font-size: 1.5rem;
+}
+
+.page-create-room {}
+
+.page-room {}

@@ -29,7 +29,7 @@
 
         <div v-if="message">
             <p>{{ message }}</p>
-            <a :href="'/room/' + code">
+            <a v-if="showMessage" :href="'/room/' + code">
                 <button>Entra come narratore</button>
             </a>
         </div>
@@ -89,9 +89,8 @@ export default {
                     code: this.code,
                 });
 
+                this.showMessage = true;
                 this.code = response.data;
-
-                this.code === true ? showMessage = true : showMessage = false;
 
                 this.message = "Stanza creata! Codice: " + response.data;
             } catch (error) {
