@@ -24,7 +24,7 @@ Route::post('/join', function (Request $request) {
         return "Stanza non trovata!";
     }
 
-        $playerCount = Player::where('room_id', $room->id)->count();
+    $playerCount = Player::where('room_id', $room->id)->count();
     if ($playerCount >= $room->max_players) {
         return "La stanza è piena!";
     }
@@ -32,16 +32,11 @@ Route::post('/join', function (Request $request) {
     // Controlla quanti giocatori ci sono già
     $existingPlayers = Player::where('room_id', $room->id)->get();
 
-    // Controllo numero massimo di giocatori
-if ($existingPlayers->count() >= $room->max_players) {
-    return "La stanza è piena!";
-}
-
-
     // Definiamo i ruoli massimi disponibili
     $maxRoles = [
     'Lupo' => $room->max_lupi,
     'Veggente' => $room->max_veggenti,
+    'Meretrice' => $room->max_meretrici,
     'Contadino' => $room->max_contadini,
 ];
 
@@ -102,20 +97,20 @@ Route::get('/create-room', function () {
 });
 
 Route::post('/create-room', function (Illuminate\Http\Request $request) {
+    $totalRoles = $request->max_lupi + $request->max_veggenti + $request->max_meretrici + $request->max_contadini;
+
+    if ($totalRoles > $request->max_players) {
+        return response("Errore: i ruoli superano il numero massimo di giocatori", 400);
+    }
+
     $room = \App\Models\Room::create([
         'code' => strtoupper(Str::random(6)),
         'max_players' => $request->max_players,
         'max_lupi' => $request->max_lupi,
         'max_veggenti' => $request->max_veggenti,
+        'max_meretrici' => $request->max_meretrici,
         'max_contadini' => $request->max_contadini,
     ]);
-
-    $totalRoles = $request->max_lupi + $request->max_veggenti + $request->max_contadini;
-
-if ($totalRoles > $request->max_players) {
-    return response("Errore: i ruoli superano il numero massimo di giocatori", 400);
-}
-
 
     return $room->code;
 });
