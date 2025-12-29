@@ -6,6 +6,7 @@ import '../css/app.css';
 import RoomComponent from './components/RoomComponent.vue';
 import CreateRoom from './components/CreateRoom.vue';
 import Home from './components/Home.vue';
+import Join from './components/Join.vue';
 import App from './App.vue';
 
 
@@ -14,6 +15,7 @@ const app = createApp({});
 app.component('home-component', Home);
 app.component('room-component', RoomComponent);
 app.component('create-room', CreateRoom);
+app.component('join-component', Join);
 
 app.use(router);
 app.mount('#app');

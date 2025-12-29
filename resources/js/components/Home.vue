@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+        <h1>Benvenuto in Lupus in Fabula</h1>
         <!-- Metterai la route dopo -->
         <!-- <a href="/create-room">
             <button @click="$router.push({ path: '/create-room' })">Crea stanza</button>

@@ -1,6 +1,15 @@
-<form method="POST" action="/join">
-    @csrf
-    <input name="name" placeholder="Nome">
-    <input name="code" placeholder="Codice stanza">
-    <button>Entra</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stanza</title>
+    @vite('resources/js/app.js')
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div id="app">
+        <join-component></join-component>
+    </div>
+</body>
+</html>

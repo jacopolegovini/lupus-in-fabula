@@ -22,10 +22,17 @@ body {
     background: var(--bg);
     color: white;
     font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+    padding: 0 2rem;
 }
 
 #app {
     min-height: 100vh;
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: center;
+    line-height: 100%;
 }
 
 .main-button {
@@ -36,33 +43,95 @@ body {
     color: white;
     font-weight: bold;
     border: 2px solid white;
+    font-size: 1.5rem;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
 
+.main-button:hover {
+    background: white;
+    color: var(--main-button);
+    transform: scale(1.05);
+    border: 2px solid var(--main-button);
 }
 
 .secondary-button {
     cursor: pointer;
     border-radius: 20px;
     padding: 0.75rem 1.5rem;
+    font-size: 1.5rem;
     background: var(--secondary-button);
     color: white;
     font-weight: bold;
     border: 2px solid white;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.secondary-button:hover {
+    background: white;
+    color: var(--secondary-button);
+    transform: scale(1.05);
+    border: 2px solid var(--secondary-button);
 }
 
 /* ========== LAYOUT ========= */
-.home {
+.home,
+.create-room,
+.join {
     min-height: 100vh;
+}
+
+.home {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1.5rem;
 }
 
-.home .main-button {
-    margin: 1rem;
-    font-size: 1.5rem;
+.create-room {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-.page-create-room {}
+.create-room form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-.page-room {}
+.create-room .main-button {
+    font-size: 1rem;
+}
+
+.create-room .secondary-button {
+    font-size: 1rem;
+}
+
+.join {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.join form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.join input::placeholder {
+    text-align: center;
+}
+
+.join .main-button {
+    font-size: 1rem;
+}

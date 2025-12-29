@@ -1,6 +1,6 @@
 <template>
     <div class="create-room">
-        <h1>Crea Stanza</h1>
+        <h1>Creazione Stanza</h1>
 
         <form @submit.prevent="createRoom">
             <label>
@@ -24,13 +24,13 @@
                 <input type="number" v-model.number="maxContadini" min="0" />
             </label>
 
-            <button type="submit">Crea stanza</button>
+            <button class="main-button" type="submit">Crea stanza</button>
         </form>
 
         <div v-if="message">
             <p>{{ message }}</p>
             <a v-if="showMessage" :href="'/room/' + code">
-                <button>Entra come narratore</button>
+                <button class="secondary-button">Entra come narratore</button>
             </a>
         </div>
     </div>
