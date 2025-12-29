@@ -27,7 +27,12 @@
             <button type="submit">Crea stanza</button>
         </form>
 
-        <p v-if="message">{{ message }}</p>
+        <div v-if="message">
+            <p>{{ message }}</p>
+            <a :href="'/room/' + code">
+                <button>Entra come narratore</button>
+            </a>
+        </div>
     </div>
 </template>
 
@@ -42,7 +47,9 @@ export default {
             maxVeggenti: 1,
             maxMeretrici: 1,
             maxContadini: 4,
-            message: ''
+            message: '',
+            code: '',
+            showMessage: false,
         };
     },
 
@@ -78,8 +85,13 @@ export default {
                     max_lupi: this.maxLupi,
                     max_veggenti: this.maxVeggenti,
                     max_meretrici: this.maxMeretrici,
-                    max_contadini: this.maxContadini
+                    max_contadini: this.maxContadini,
+                    code: this.code,
                 });
+
+                this.code = response.data;
+
+                this.code === true ? showMessage = true : showMessage = false;
 
                 this.message = "Stanza creata! Codice: " + response.data;
             } catch (error) {
