@@ -2,32 +2,32 @@ FROM php:8.2-fpm
 
 WORKDIR /var/www/html
 
-# Installazione dipendenze
+# 1. Installazione dipendenze di sistema
 RUN apt-get update && apt-get install -y \
     libzip-dev unzip git curl nodejs npm sqlite3 libsqlite3-dev \
     && docker-php-ext-install pdo pdo_sqlite zip
 
-# Copia file
+# 2. Copia dei file del progetto
 COPY . .
 
-# Installazione Composer e dipendenze
+# 3. Installazione Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
-RUN npm install && npm run build
 
-# Settiamo i permessi per le cartelle dove Laravel deve scrivere
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# 4. Compilazione Asset con Vite (Fondamentale)
+RUN npm install
+RUN npm run build
 
-# Creiamo la cartella per il database
+# 5. Settaggio Permessi
+# Dobbiamo assicurarci che TUTTA la cartella public e storage sia scrivibile
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
+
+# 6. Creazione cartella database
 RUN mkdir -p /var/www/html/database && chown -R www-data:www-data /var/www/html/database
 
 EXPOSE 8000
 
-# Comando di avvio:
-# 1. Crea il file database se non esiste
-# 2. Imposta i permessi di scrittura
-# 3. Esegue le migrazioni
-# 4. Avvia il server
+# 7. Comando di avvio
 CMD touch /var/www/html/database/database.sqlite && \
     chmod 666 /var/www/html/database/database.sqlite && \
     php artisan migrate --force && \
