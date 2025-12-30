@@ -1,32 +1,33 @@
-# 1. Base image
 FROM php:8.2-fpm
 
-# 2. Cartella di lavoro
 WORKDIR /var/www/html
 
-# 3. Installo dipendenze di sistema
+# Installazione dipendenze
 RUN apt-get update && apt-get install -y \
-    libzip-dev unzip git curl nodejs npm sqlite3 libsqlite3-dev && \
-    docker-php-ext-install pdo pdo_sqlite zip
+    libzip-dev unzip git curl nodejs npm sqlite3 libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite zip
 
-# 4. Copio il progetto
+# Copia file
 COPY . .
 
-# 5. Installo Composer (Metodo più pulito)
+# Installazione Composer e dipendenze
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# 6. Installo dipendenze PHP e Node
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
-# 7. Assicuriamoci che la cartella database esista e abbia i permessi
-RUN mkdir -p /var/www/html/database && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+# Settiamo i permessi per le cartelle dove Laravel deve scrivere
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# 8. Esposizione porta
+# Creiamo la cartella per il database
+RUN mkdir -p /var/www/html/database && chown -R www-data:www-data /var/www/html/database
+
 EXPOSE 8000
 
-# 9. Comando di avvio "intelligente"
-# Questo comando crea il file sqlite se manca, dà i permessi e poi avvia Laravel
+# Comando di avvio:
+# 1. Crea il file database se non esiste
+# 2. Imposta i permessi di scrittura
+# 3. Esegue le migrazioni
+# 4. Avvia il server
 CMD touch /var/www/html/database/database.sqlite && \
     chmod 666 /var/www/html/database/database.sqlite && \
     php artisan migrate --force && \
