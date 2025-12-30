@@ -19,13 +19,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
-# 7. Permessi fondamentali per Laravel
-# Render ha bisogno che le cartelle storage e bootstrap siano scrivibili
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# 7. Assicuriamoci che la cartella database esista e abbia i permessi
+RUN mkdir -p /var/www/html/database && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
 # 8. Esposizione porta
 EXPOSE 8000
 
-# 9. Comando di avvio migliorato
-# Usiamo un comando unico che prepara il database e avvia il server
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
+# 9. Comando di avvio "intelligente"
+# Questo comando crea il file sqlite se manca, dà i permessi e poi avvia Laravel
+CMD touch /var/www/html/database/database.sqlite && \
+    chmod 666 /var/www/html/database/database.sqlite && \
+    php artisan migrate --force && \
+    php artisan serve --host=0.0.0.0 --port=8000
