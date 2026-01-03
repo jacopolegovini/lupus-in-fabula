@@ -135,3 +135,7 @@ h1 {
 .join .main-button {
     font-size: 1rem;
 }
+
+.component-room .player-eliminate {
+    text-decoration: line-through;
+}
