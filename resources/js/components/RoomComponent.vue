@@ -3,7 +3,7 @@
         <h1>Stanza {{ roomCode }}</h1>
         <ul>
             <li v-for="player in players" :key="player.id" @click="selectPlayer(player.id)"
-                :class="{ 'player-eliminate': selectedPlayerId === player.id }">
+                :class="{ 'player-eliminate': selectedPlayerIds.includes(player.id) }">
                 {{ player.name }} - {{ player.role }}
             </li>
         </ul>
@@ -20,7 +20,7 @@ export default {
     data() {
         return {
             players: [],
-            selectedPlayerId: null,
+            selectedPlayerIds: [],
         };
     },
     mounted() {
@@ -37,10 +37,12 @@ export default {
             }
         },
         selectPlayer(playerId) {
-            if (this.selectedPlayerId === playerId) {
-                this.selectedPlayerId = null;
+            const index = this.selectedPlayerIds.indexOf(playerId);
+
+            if (index === -1) {
+                this.selectedPlayerIds.push(playerId);
             } else {
-                this.selectedPlayerId = playerId;
+                this.selectedPlayerIds.splice(index, 1);
             }
         }
     },
